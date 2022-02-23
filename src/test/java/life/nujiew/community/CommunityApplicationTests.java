@@ -1,4 +1,4 @@
-package com.nujiew.community;
+package life.nujiew.community;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.nujiew.community;
+package life.nujiew.community;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
