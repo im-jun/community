@@ -7,20 +7,20 @@ import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class GithubProvider {
     /**
      * 获取accesstoken
+     * 使用okhttp
      * @param accessTokenDTO
      * @return
      */
     public String getAccessToken(AccessTokenDTO accessTokenDTO){
-        MediaType mediaType = MediaType.get("application/json; charset=utf-8");
+        MediaType json = MediaType.get("application/json; charset=utf-8");
 
-        OkHttpClient client = getOKHttpClient();
-        RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(json, JSON.toJSONString(accessTokenDTO));
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)
@@ -45,7 +45,7 @@ public class GithubProvider {
      * @return
      */
     public GithubUser getUser(String accessToken){
-        OkHttpClient client = getOKHttpClient();
+        OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
                 .url("https://api.github.com/user")
@@ -62,17 +62,5 @@ public class GithubProvider {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /*
-    * 解决okhttp总是socketTimeout问题
-    * https://www.cnblogs.com/oldboyooxx/p/13024390.html
-    * */
-    public OkHttpClient getOKHttpClient(){
-        return new OkHttpClient()
-                .newBuilder()
-                .retryOnConnectionFailure(false)
-                .connectionPool(new ConnectionPool(5, 10, TimeUnit.SECONDS))
-                .build();
     }
 }
