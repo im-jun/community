@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发布 - 码农论坛</title>
+    <script src="https://fastly.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha384-
+    nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
+    <link rel="stylesheet" th:href="@{/css/community.css}">
+    <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <!--顶部-->
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">码农论坛</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">码农论坛</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <!--Github登录第一步：请求用户的Github身份-->
+                <!--user为null说明没有登录成功，此时才显示登录按钮-->
+                <li th:if="${session.user == null}">
+                    <a href="https://github.com/login/oauth/authorize?client_id=7165422e9053eee9f701&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a>
+                </li>
+                <!--user不为null，说明登录成功-->
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" th:text="${session.user.getName()}">我<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">消息中心</a></li>
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--内容-->
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发布帖子</h2>
+            <hr>
+            <form action="#">
+                <div class="form-group">
+                    <label for="title">帖子标题：</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="帖子标题...">
+                </div>
+                <div class="form-group">
+                    <label for="title">具体内容：</label>
+                    <textarea class="form-control" id="description" name="description" cols="30" rows="10"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="title">添加标签：</label>
+                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以英文逗号隔开...">
+                </div>
+
+                <button type="submit" class="btn btn-success btn-publish">确认发布</button>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>发布帖子指南</h3>
+            帖子标题：尽量精简<br>
+            具体内容：清晰的描述<br>
+            标签选择：一个或多个，使用英文逗号分隔，每个标签不超过10个字
+        </div>
+    </div>
+</div>
+</body>
+</html>
