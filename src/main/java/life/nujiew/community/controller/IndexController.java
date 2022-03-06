@@ -21,7 +21,7 @@ public class IndexController {
         // 通过cookie判断登录状态
         // 访问首页时，循环查看所有cookie，找到对应name的cookie，获取该cookie的value
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
+        if (cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
