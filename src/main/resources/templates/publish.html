@@ -32,6 +32,9 @@
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
+                <li th:if="${session.user != null}">
+                    <a href="/publish">发布</a>
+                </li>
                 <!--Github登录第一步：请求用户的Github身份-->
                 <!--user为null说明没有登录成功，此时才显示登录按钮-->
                 <li th:if="${session.user == null}">
@@ -57,28 +60,35 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发布帖子</h2>
             <hr>
-            <form action="#">
+            <form action="/publish" method="post">
                 <div class="form-group">
                     <label for="title">帖子标题：</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="帖子标题...">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="帖子标题..." th:value="${title}">
                 </div>
                 <div class="form-group">
-                    <label for="title">具体内容：</label>
-                    <textarea class="form-control" id="description" name="description" cols="30" rows="10"></textarea>
+                    <label for="description">具体内容：</label>
+                    <textarea class="form-control" id="description" name="description" cols="30" rows="10" th:text="${description}"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="title">添加标签：</label>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以英文逗号隔开...">
+                    <label for="tag">添加标签：</label>
+                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以英文逗号隔开..." th:value="${tag}">
                 </div>
 
-                <button type="submit" class="btn btn-success btn-publish">确认发布</button>
+                <div class="container-fluid main">
+                    <div class="row">
+                        <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" th:text="${error}" th:if="${error} != null"></div>
+                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-success btn-publish">发布</button>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h3>发布帖子指南</h3>
-            帖子标题：尽量精简<br>
-            具体内容：清晰的描述<br>
-            标签选择：一个或多个，使用英文逗号分隔，每个标签不超过10个字
+            <b>帖子标题：</b>尽量精简<br>
+            <b>具体内容：</b>清晰的描述<br>
+            <b>标签选择：</b>一个或多个，使用英文逗号分隔，每个标签不超过10个字
         </div>
     </div>
 </div>

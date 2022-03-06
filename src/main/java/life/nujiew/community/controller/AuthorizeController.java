@@ -59,7 +59,7 @@ public class AuthorizeController {
         GithubUser githubUser = githubProvider.getUser(accessToken);
 
         // 判断登录状态
-        if (githubUser != null) {
+        if (githubUser != null && githubUser.getId() != null) {
             // 构造user，将用户信息持久化到数据库
             User user = new User();
             user.setName(githubUser.getName());
