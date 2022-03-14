@@ -20,19 +20,8 @@ public class PaginationDTO {
     private List<Integer> pages = new ArrayList<>(); // 存储分页条要展示的页码
     private Integer totalPage; // 总页数
 
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
-        /*
-        * 显示的总页数
-        * 例如现在有12条帖子，totalCount = 12
-        * 一页显示5条帖子，size = 5
-        * 那么，totalPage = 12 / 5 + 1
-        * */
-        if (totalCount % size == 0) {
-            totalPage = totalCount / size;
-        } else {
-            totalPage = totalCount / size + 1;
-        }
-
+    public void setPagination(Integer totalPage, Integer page) {
+        this.totalPage = totalPage;
         this.page = page;
 
         // 设置分页条要展示的页码

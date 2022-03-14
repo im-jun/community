@@ -22,4 +22,12 @@ public interface QuestionMapper {
     // 查询帖子总数
     @Select("select count(1) from question")
     Integer count();
+
+    // 查找对应用户的帖子，也就是 ‘我的帖子’
+    @Select("select * from question where creator = #{userId} limit #{offset},#{size}")
+    List<Question> listByUserId(@Param(value = "userId") Integer userId, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
+
+    // 查询某用户帖子总数
+    @Select("select count(1) from question where creator = #{userId}")
+    Integer countByUserId(@Param(value = "userId") Integer userId);
 }
