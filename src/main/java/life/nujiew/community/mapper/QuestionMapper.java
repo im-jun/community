@@ -30,4 +30,8 @@ public interface QuestionMapper {
     // 查询某用户帖子总数
     @Select("select count(1) from question where creator = #{userId}")
     Integer countByUserId(@Param(value = "userId") Integer userId);
+
+    // 根据帖子id查出对应帖子
+    @Select("select * from question where id = #{id}")
+    Question getById(@Param(value = "id") Integer id);
 }

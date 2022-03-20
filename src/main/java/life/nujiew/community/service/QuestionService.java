@@ -159,4 +159,19 @@ public class QuestionService {
         // 返回DTO
         return paginationDTO;
     }
+
+    /**
+     * 通过帖子id查出对应的帖子
+     * @param id
+     * @return
+     */
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        User user = userMapper.findById(question.getCreator());
+        QuestionDTO questionDTO = new QuestionDTO();
+        // 快速将一个对象的所有属性拷贝到另一个目标对象上
+        BeanUtils.copyProperties(question, questionDTO);
+        questionDTO.setUser(user);
+        return questionDTO;
+    }
 }
