@@ -5,6 +5,7 @@ import life.nujiew.community.dto.GithubUser;
 import life.nujiew.community.mapper.UserMapper;
 import life.nujiew.community.model.User;
 import life.nujiew.community.provider.GithubProvider;
+import life.nujiew.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class AuthorizeController {
     private String redirectUri;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     /**
      * Github授权登录
@@ -67,10 +68,9 @@ public class AuthorizeController {
             // 以这个token，来绑定登录状态，这个token就相当于cookie的作用
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatar_url());
-            userMapper.insert(user);
+            // 创建或更新
+            userService.createOrUpdate(user);
 
             // 登录成功，写cookie
             response.addCookie(new Cookie("token", token));
@@ -79,5 +79,23 @@ public class AuthorizeController {
             // 登录失败
             return "redirect:/";
         }
+    }
+
+
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        // 移除session
+        request.getSession().removeAttribute("user");
+        // 移除cookie，用空的覆盖掉原来的
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 }
