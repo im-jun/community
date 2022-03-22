@@ -1,10 +1,7 @@
 package life.nujiew.community.mapper;
 
 import life.nujiew.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -34,4 +31,8 @@ public interface QuestionMapper {
     // 根据帖子id查出对应帖子
     @Select("select * from question where id = #{id}")
     Question getById(@Param(value = "id") Integer id);
+
+    // 更新帖子
+    @Update("update question set title = #{title}, description = #{description}, gmt_modified = #{gmtModified}, tag = #{tag} where id = #{id}")
+    void update(Question question);
 }

@@ -174,4 +174,22 @@ public class QuestionService {
         questionDTO.setUser(user);
         return questionDTO;
     }
+
+
+    /**
+     * 更新帖子，判断是更新还是新建
+     * @param question
+     */
+    public void createOrUpdate(Question question) {
+        if (question.getId() == null) {
+            // 新建帖子
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        } else {
+            // 更新帖子
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
+    }
 }
