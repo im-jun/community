@@ -73,7 +73,7 @@ public class QuestionService {
         // 循环所有帖子
         for (Question question : questions) {
             // 通过帖子的Creator关联到user的id，查询出对应的user
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             // 创建DTO
             QuestionDTO questionDTO = new QuestionDTO();
             // 快速将一个对象的所有属性拷贝到另一个目标对象上
@@ -143,7 +143,7 @@ public class QuestionService {
         // 循环所有帖子
         for (Question question : questions) {
             // 通过帖子的Creator关联到user的id，查询出对应的user
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             // 创建DTO
             QuestionDTO questionDTO = new QuestionDTO();
             // 快速将一个对象的所有属性拷贝到另一个目标对象上
@@ -167,7 +167,7 @@ public class QuestionService {
      */
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.getById(id);
-        User user = userMapper.findById(question.getCreator());
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         // 快速将一个对象的所有属性拷贝到另一个目标对象上
         BeanUtils.copyProperties(question, questionDTO);
