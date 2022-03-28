@@ -2,6 +2,8 @@ package life.nujiew.community.service;
 
 import life.nujiew.community.dto.PaginationDTO;
 import life.nujiew.community.dto.QuestionDTO;
+import life.nujiew.community.exception.CustomizeErrorCode;
+import life.nujiew.community.exception.CustomizeException;
 import life.nujiew.community.mapper.QuestionMapper;
 import life.nujiew.community.mapper.UserMapper;
 import life.nujiew.community.model.Question;
@@ -175,6 +177,9 @@ public class QuestionService {
      */
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         // 快速将一个对象的所有属性拷贝到另一个目标对象上
@@ -204,7 +209,11 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria()
                     .andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion, example);
+            int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
+            if (updated != 1) {
+                // 当在修改的时候，该条帖子被删除了，那么点击发布就会抛异常
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }
