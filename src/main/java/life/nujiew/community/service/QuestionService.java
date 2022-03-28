@@ -4,6 +4,7 @@ import life.nujiew.community.dto.PaginationDTO;
 import life.nujiew.community.dto.QuestionDTO;
 import life.nujiew.community.exception.CustomizeErrorCode;
 import life.nujiew.community.exception.CustomizeException;
+import life.nujiew.community.mapper.QuestionExtMapper;
 import life.nujiew.community.mapper.QuestionMapper;
 import life.nujiew.community.mapper.UserMapper;
 import life.nujiew.community.model.Question;
@@ -24,6 +25,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     /**
      * 分页查询所有帖子
@@ -215,5 +219,16 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    /**
+     * 累加阅读数
+     * @param id
+     */
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
